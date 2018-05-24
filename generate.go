@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 
@@ -63,7 +62,13 @@ func generateCodeplug(repeaters []string, tgs []string) (*codeplug.Codeplug, err
 		c := channel
 		c.Contact = contacts["9"]
 		if c.Contact == nil {
-			return nil, errors.New("Talkgroup 9 not found")
+			contact := codeplug.Contact{
+				Name: "TG9",
+				ID:   "9",
+			}
+			cp.Contacts = append(cp.Contacts, &contact)
+			contacts["9"] = &contact
+			c.Contact = &contact
 		}
 		c.Name = groups["9"]
 		if c.Name == "" {
@@ -79,7 +84,13 @@ func generateCodeplug(repeaters []string, tgs []string) (*codeplug.Codeplug, err
 			c := channel
 			c.Contact = contacts[tg]
 			if c.Contact == nil {
-				return nil, fmt.Errorf("Talkgroup %s not found", tg)
+				contact := codeplug.Contact{
+					Name: fmt.Sprint("TG", tg),
+					ID:   tg,
+				}
+				cp.Contacts = append(cp.Contacts, &contact)
+				contacts[tg] = &contact
+				c.Contact = &contact
 			}
 			c.Name = groups[tg]
 			if c.Name == "" {
@@ -102,7 +113,13 @@ func generateCodeplug(repeaters []string, tgs []string) (*codeplug.Codeplug, err
 			c := channel
 			c.Contact = contacts[tg]
 			if c.Contact == nil {
-				return nil, fmt.Errorf("Talkgroup %s not found", tg)
+				contact := codeplug.Contact{
+					Name: fmt.Sprint("TG", tg),
+					ID:   tg,
+				}
+				cp.Contacts = append(cp.Contacts, &contact)
+				contacts[tg] = &contact
+				c.Contact = &contact
 			}
 			c.Name = groups[fmt.Sprint(s.ExtTalkgroup)]
 			if c.Name == "" {
@@ -125,7 +142,13 @@ func generateCodeplug(repeaters []string, tgs []string) (*codeplug.Codeplug, err
 			c := channel
 			c.Contact = contacts[tg]
 			if c.Contact == nil {
-				return nil, fmt.Errorf("Talkgroup %s not found", tg)
+				contact := codeplug.Contact{
+					Name: fmt.Sprint("TG", tg),
+					ID:   tg,
+				}
+				cp.Contacts = append(cp.Contacts, &contact)
+				contacts[tg] = &contact
+				c.Contact = &contact
 			}
 			c.Name = groups[tg]
 			if c.Name == "" {
