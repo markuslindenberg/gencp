@@ -31,8 +31,8 @@ type Model interface {
 	GetID() string
 	GetNames() []*Name
 	GetFormats() []*Format
-	Generate(name string, format string, dmrid uint, callsign string, codeplug *codeplug.Codeplug) (data []byte, err error)
-	Flash(name string, dmrid uint, callsign string, codeplug *codeplug.Codeplug) error
+	Generate(name string, format string, dmrid string, callsign string, codeplug *codeplug.Codeplug) (data []byte, err error)
+	Flash(name string, dmrid string, callsign string, codeplug *codeplug.Codeplug) error
 }
 
 // Register makes a radio model available to gencp.

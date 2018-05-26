@@ -18,8 +18,9 @@ func (c ContactSlice) Swap(i, j int)      { c[i], c[j] = c[j], c[i] }
 // Channel is a DMR channel
 type Channel struct {
 	Name        string
-	RxFrequency uint64
-	TxFrequency uint64
+	Repeater    string
+	RxFrequency string
+	TxFrequency string
 	Slot        uint8
 	ColorCode   uint8
 	Contact     *Contact

@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"sort"
 	"strings"
 	"unicode"
@@ -18,12 +19,14 @@ func init() {
 
 func main() {
 	var (
-		dmridFlag     = flag.Uint("d", 0, "DMR ID")
+		dmridFlag     = flag.String("d", "0", "DMR ID")
 		callsignFlag  = flag.String("c", "XX0XX", "callsign")
+		mccFlag       = flag.String("mcc", "262", "MCC (country code)")
+		tgLimitFlag   = flag.Uint("tglimit", 4, "Minimum ID length for TGs in other countries")
 		repeatersFlag = flag.String("r", "262440,262477,262412,262436,262421", "repeater ID(s)")
 		tgsFlag       = flag.String("t", "26223", "extra talkgroup(s) in all zones")
 		modelFlag     = flag.String("m", "md380", "radio model")
-		formatFlag    = flag.String("o", "rdt", "output format")
+		formatFlag    = flag.String("o", "json", "output format")
 		listFlag      = flag.Bool("l", false, "list supported models and formats")
 		// flashFlag  = flag.Bool("f", false, "flash codeplug to radio")
 		serveFlag = flag.Bool("s", false, "run as webserver")
@@ -65,11 +68,26 @@ func main() {
 		log.Fatal("Unsupported output format")
 	}
 
+	for _, c := range *dmridFlag {
+		if !unicode.IsDigit(c) {
+			log.Fatal("DMR ID must be numeric")
+		}
+	}
+
+	for _, c := range *mccFlag {
+		if !unicode.IsDigit(c) {
+			log.Fatal("MCC must be numeric")
+		}
+	}
+
 	repeaters := strings.Split(*repeatersFlag, ",")
 	for _, repeater := range repeaters {
+		if repeater == "" {
+			log.Fatal("Repeater ID cannot be empty")
+		}
 		for _, c := range repeater {
 			if !unicode.IsDigit(c) {
-				log.Fatal("Invalid character in repeater ID")
+				log.Fatal("Repeater ID must be numeric")
 			}
 		}
 	}
@@ -78,20 +96,19 @@ func main() {
 	for _, tg := range tgs {
 		for _, c := range tg {
 			if !unicode.IsDigit(c) {
-				log.Fatal("Invalid character in talkgroup ID")
+				log.Fatal("Talkgroup ID must be numeric")
 			}
 		}
 	}
 
-	cp, err := generateCodeplug(repeaters, tgs)
+	cp, err := generateCodeplug(repeaters, tgs, *mccFlag, int(*tgLimitFlag))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = m.Generate(*modelFlag, *formatFlag, *dmridFlag, *callsignFlag, cp)
+	data, err := m.Generate(*modelFlag, *formatFlag, *dmridFlag, *callsignFlag, cp)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Println("Success to /dev/null")
+	os.Stdout.Write(data)
 }
