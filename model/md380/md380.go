@@ -3,6 +3,7 @@ package md380
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"gopkg.in/square/go-jose.v2/json"
 
@@ -121,6 +122,9 @@ func (m *md380) Generate(name string, format string, dmrid string, callsign stri
 		channel.RxFrequency = c.RxFrequency
 		channel.TxFrequency = c.TxFrequency
 		channel.ScanList = c.ScanList.Name
+		if strings.HasPrefix(c.Contact.ID, "91") {
+			channel.RxOnly = "On"
+		}
 		md380cp.Channels = append(md380cp.Channels, channel)
 	}
 

@@ -207,6 +207,31 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 			scanList.Channels = append(scanList.Channels, &c)
 		}
 
+		for _, tg := range tgs {
+			c := channel
+			c.Contact = contacts[tg]
+			if c.Contact == nil {
+				contact := codeplug.Contact{
+					Name: fmt.Sprint("TG", tg),
+					ID:   tg,
+				}
+				cp.Contacts = append(cp.Contacts, &contact)
+				contacts[tg] = &contact
+				c.Contact = &contact
+			}
+			c.Name = groups[tg]
+			if c.Name == "" {
+				c.Name = fmt.Sprint("TG", tg)
+			}
+			c.Repeater = callsign
+			c.ScanList = &scanList
+			c.Slot = 2
+			c.GroupList = &ts2GroupList
+			ts2Channels = append(ts2Channels, &c)
+			ts2GroupList.Contacts = append(ts2GroupList.Contacts, c.Contact)
+			scanList.Channels = append(scanList.Channels, &c)
+		}
+
 		cp.GroupLists = append(cp.GroupLists, &ts1GroupList)
 		cp.GroupLists = append(cp.GroupLists, &ts2GroupList)
 		cp.Channels = append(cp.Channels, ts2Channels...)

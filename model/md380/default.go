@@ -4,13 +4,13 @@ var (
 	codeplugTemplate = Codeplug{
 		BasicInformation: BasicInformation{
 			FrequencyRange:     "400-480 MHz",
-			LastProgrammedTime: "24-May-2018 01:18:22",
+			LastProgrammedTime: "19-Nov-2017 15:52:26",
 			Model:              "MD380",
 		},
 		GeneralSettings: GeneralSettings{
-			BacklightTime:          "10",
+			BacklightTime:          "15",
 			CallAlertToneDuration:  "5",
-			ChFreeIndicationTone:   "On",
+			ChFreeIndicationTone:   "Off",
 			DisableAllLeds:         "Off",
 			DisableAllTones:        "Off",
 			GroupCallHangTime:      "7000",
