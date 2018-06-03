@@ -20,6 +20,19 @@ type md380 struct {
 	formats []*model.Format
 }
 
+func truncate(input string, length int) string {
+	result := input
+	chars := 0
+	for i := range input {
+		if chars >= length {
+			result = input[:i]
+			break
+		}
+		chars++
+	}
+	return result
+}
+
 func newMD380() *md380 {
 	return &md380{
 		names: []*model.Name{
@@ -67,30 +80,19 @@ func (m *md380) Generate(name string, format string, dmrid string, callsign stri
 	// Truncate all names to 16 characters
 	for _, c := range codeplug.Channels {
 		maxLen := 16 - (len(c.Repeater) + 1)
-		if len(c.Name) > maxLen {
-			c.Name = c.Name[:maxLen]
-		}
-		c.Name = c.Name + " " + c.Repeater
+		c.Name = truncate(c.Name, maxLen) + " " + c.Repeater
 	}
 	for _, c := range codeplug.Contacts {
-		if len(c.Name) > 16 {
-			c.Name = c.Name[:16]
-		}
+		c.Name = truncate(c.Name, 16)
 	}
 	for _, l := range codeplug.GroupLists {
-		if len(l.Name) > 16 {
-			l.Name = l.Name[:16]
-		}
+		l.Name = truncate(l.Name, 16)
 	}
 	for _, l := range codeplug.ScanLists {
-		if len(l.Name) > 16 {
-			l.Name = l.Name[:16]
-		}
+		l.Name = truncate(l.Name, 16)
 	}
 	for _, l := range codeplug.Zones {
-		if len(l.Name) > 16 {
-			l.Name = l.Name[:16]
-		}
+		l.Name = truncate(l.Name, 16)
 	}
 
 	md380cp := codeplugTemplate

@@ -27,7 +27,14 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 	t := transform.Chain(norm.NFD, transform.RemoveFunc(isMn), norm.NFC)
 
 	for id, name := range groups {
-		groups[id], _, _ = transform.String(t, name)
+		name, _, _ = transform.String(t, name)
+		for _, r := range name {
+			if r >= unicode.MaxASCII {
+				name = "TG" + id
+				break
+			}
+		}
+		groups[id] = name
 	}
 
 	contacts1 := make(codeplug.ContactSlice, 0)
@@ -66,7 +73,7 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 		}
 
 		zone := codeplug.Zone{
-			Name:     callsign + " " + repeater.City,
+			Name:     callsign,
 			Channels: []*codeplug.Channel{},
 		}
 		ts1GroupList := codeplug.ContactList{
