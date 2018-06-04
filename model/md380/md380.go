@@ -82,8 +82,22 @@ func (m *md380) Generate(name string, format string, dmrid string, callsign stri
 		maxLen := 16 - (len(c.Repeater) + 1)
 		c.Name = truncate(c.Name, maxLen) + " " + c.Repeater
 	}
+
+	contactNames := map[string]struct{}{}
 	for _, c := range codeplug.Contacts {
-		c.Name = truncate(c.Name, 16)
+		origName := strings.TrimSpace(c.Name)
+		c.Name = truncate(origName, 16)
+		i := 1
+		for {
+			if _, exists := contactNames[c.Name]; !exists {
+				contactNames[c.Name] = struct{}{}
+				break
+			}
+			i++
+			iStr := fmt.Sprint(i)
+			maxLen := 16 - (len(iStr) + 1)
+			c.Name = truncate(origName, maxLen) + " " + iStr
+		}
 	}
 	for _, l := range codeplug.GroupLists {
 		l.Name = truncate(l.Name, 16)

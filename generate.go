@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sort"
 	"strings"
 	"unicode"
@@ -155,6 +156,7 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 					Name: fmt.Sprint("TG", tg),
 					ID:   tg,
 				}
+				log.Println("Creating missing contact", contact.Name)
 				cp.Contacts = append(cp.Contacts, &contact)
 				contacts[tg] = &contact
 				c.Contact = &contact
