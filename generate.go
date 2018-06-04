@@ -108,7 +108,7 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 			contacts["9"] = &contact
 			c.Contact = &contact
 		}
-		c.Name = "Local"
+		c.Name = "TG9"
 		c.Repeater = callsign
 		c.Slot = 2
 		c.GroupList = &ts2GroupList
@@ -130,10 +130,7 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 				contacts[tg] = &contact
 				c.Contact = &contact
 			}
-			c.Name = groups[fmt.Sprint(s.ExtTalkgroup)]
-			if c.Name == "" {
-				c.Name = fmt.Sprint("TG", tg)
-			}
+			c.Name = fmt.Sprint("TG", tg)
 			c.Repeater = callsign
 			c.ScanList = &scanList
 			if s.Slot == 1 {
@@ -162,11 +159,8 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 				contacts[tg] = &contact
 				c.Contact = &contact
 			}
-			c.Name = groups[tg]
+			c.Name = fmt.Sprint("TG", tg)
 			c.Repeater = callsign
-			if c.Name == "" {
-				c.Name = fmt.Sprint("TG", tg)
-			}
 			c.ScanList = &scanList
 			if s.Slot == 1 {
 				c.Slot = 1
@@ -194,10 +188,7 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 				contacts[tg] = &contact
 				c.Contact = &contact
 			}
-			c.Name = groups[tg]
-			if c.Name == "" {
-				c.Name = fmt.Sprint("TG", tg)
-			}
+			c.Name = fmt.Sprint("TG", tg)
 			c.Repeater = callsign
 			c.ScanList = &scanList
 			if s.Slot == 1 {
@@ -226,10 +217,7 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 				contacts[tg] = &contact
 				c.Contact = &contact
 			}
-			c.Name = groups[tg]
-			if c.Name == "" {
-				c.Name = fmt.Sprint("TG", tg)
-			}
+			c.Name = fmt.Sprint("TG", tg)
 			c.Repeater = callsign
 			c.ScanList = &scanList
 			c.Slot = 2
