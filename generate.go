@@ -207,7 +207,18 @@ func generateCodeplug(repeaters []string, tgs []string, mcc string, tgLimit int)
 			scanList.Channels = append(scanList.Channels, &c)
 		}
 
+	TGLoop:
 		for _, tg := range tgs {
+			for i := range ts1Channels {
+				if ts1Channels[i].Contact.ID == tg {
+					continue TGLoop
+				}
+			}
+			for i := range ts2Channels {
+				if ts2Channels[i].Contact.ID == tg {
+					continue TGLoop
+				}
+			}
 			c := channel
 			c.Contact = contacts[tg]
 			if c.Contact == nil {
